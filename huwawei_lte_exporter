@@ -37,7 +37,8 @@ def prom_exporter():
 				'rssi': { 'help': 'Represents the entire received power including the wanted power from the serving cell as well as all co-channel power and other sources of noise in dBm', 'type': 'gauge', 'device': deviceband, 'value': client.device.signal().get('rssi')},
 				'rscp': { 'help': 'Denotes the power measured by a receiver on a particular physical communication channel in dBm', 'type': 'gauge', 'device': deviceband, 'value': client.device.signal().get('rscp')},
 				'sinr': { 'help': 'The signal-to-noise ratio of the given signal in dB', 'type': 'gauge', 'device': deviceband, 'value': client.device.signal().get('sinr')},
-				'ecio': { 'help': 'The EC/IO is a measure of the quality/cleanliness of the signal from the tower to the modem and indicates the signal-to noise ratio in dB', 'type': 'gauge', 'device': deviceband, 'value': client.device.signal().get('ecio')}
+				'ecio': { 'help': 'The EC/IO is a measure of the quality/cleanliness of the signal from the tower to the modem and indicates the signal-to noise ratio in dB', 'type': 'gauge', 'device': deviceband, 'value': client.device.signal().get('ecio')},
+				'cell_id': { 'help': 'Cell ID', 'type': 'gauge', 'device': deviceband, 'value': client.device.signal().get('cell_id')}
 			 }
 	if os.environ.get('VERBOSE') is not None:
 		pprint.pprint(signal)	
