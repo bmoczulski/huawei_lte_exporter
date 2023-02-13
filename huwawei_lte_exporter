@@ -21,6 +21,7 @@ def prom_exporter():
 
 	device_signal = client.device.signal()
 	device_information = client.device.information()
+	traffic_statistics = client.monitoring.traffic_statistics()
 
 	if os.environ.get('VERBOSE') is not None:
 		pprint.pprint(device_signal)
@@ -41,6 +42,10 @@ def prom_exporter():
 				'rscp': { 'help': 'Denotes the power measured by a receiver on a particular physical communication channel in dBm', 'type': 'gauge', 'device': deviceband, 'value': device_signal.get('rscp')},
 				'sinr': { 'help': 'The signal-to-noise ratio of the given signal in dB', 'type': 'gauge', 'device': deviceband, 'value': device_signal.get('sinr')},
 				'ecio': { 'help': 'The EC/IO is a measure of the quality/cleanliness of the signal from the tower to the modem and indicates the signal-to noise ratio in dB', 'type': 'gauge', 'device': deviceband, 'value': device_signal.get('ecio')},
+				'download_rate': { 'help': 'CurrentDownloadRate', 'type': 'gauge', 'device': deviceband, 'value': traffic_statistics.get('CurrentDownloadRate')},
+				'upload_rate': { 'help': 'CurrentUploadRate', 'type': 'gauge', 'device': deviceband, 'value': traffic_statistics.get('CurrentUploadRate')},
+				'total_download': { 'help': 'TotalDownload', 'type': 'counter', 'device': deviceband, 'value': traffic_statistics.get('TotalDownload')},
+				'total_upload': { 'help': 'TotalUpload', 'type': 'counter', 'device': deviceband, 'value': traffic_statistics.get('TotalUpload')},
 				'cell_id': { 'help': 'Cell ID', 'type': 'gauge', 'device': deviceband, 'value': device_signal.get('cell_id')}
 			 }
 	if os.environ.get('VERBOSE') is not None:
