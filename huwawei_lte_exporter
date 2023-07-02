@@ -9,6 +9,7 @@ from huawei_lte_api.Client import Client
 from huawei_lte_api.AuthorizedConnection import AuthorizedConnection
 from huawei_lte_api.Connection import Connection
 from huawei_lte_api.enums.device import ControlModeEnum
+import socket
 
 def prom_exporter():
 
@@ -106,7 +107,13 @@ for var in MANDATORY_ENV_VARS:
 	if var in os.environ:
 		config['DEFAULT'][var] = os.environ[var]
 
+class Server(SocketServer.TCPServer):
+	def server_bind(self):
+		self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+		SocketServer.TCPServer.server_bind(self)
+
 Handler = GetHandler
-httpd = SocketServer.TCPServer(("", int(config['DEFAULT']['PROM_PORT'])), Handler)
+httpd = Server(("", int(config['DEFAULT']['PROM_PORT'])), Handler)
 
 httpd.serve_forever()
